@@ -27,6 +27,5 @@ jobs:
         pip install pipenv
     - name: Run Tests
       run: |
-        pipenv shell
-        python manage.py test
-        python test/functional/functional_test.py
+        pipenv run python manage.py test
+        pipenv run python test/functional/functional_test.py
