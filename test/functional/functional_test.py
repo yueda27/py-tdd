@@ -6,7 +6,9 @@ import unittest
 
 class NewVisitorTest(unittest.TestCase):
     def setUp(self):
-        self.browser = webdriver.Firefox()
+        options = webdriver.FirefoxOptions()
+        options.headless = True
+        self.browser = webdriver.Firefox(options = options)
     
     def tearDown(self):
         self.browser.quit()
@@ -32,8 +34,6 @@ class NewVisitorTest(unittest.TestCase):
             "New to-do item did not appear in table"
         )
 
-
-        
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
