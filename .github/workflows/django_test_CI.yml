@@ -39,4 +39,4 @@ jobs:
         pipenv run python manage.py makemigrations
         pipenv run python manage.py test
         nohup pipenv run python manage.py runserver 8080 > /dev/null 2>&1 &
-        pipenv run python test/functional/functional_test.py
+        ./functional_test.sh
