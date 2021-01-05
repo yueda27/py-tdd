@@ -17,8 +17,15 @@ class HomePageTest(TestCase):
         new_item = Item.objects.first()
 
         self.assertEqual(new_item.text, 'A new list item')
-        self.assertIn('A new list item', response.content.decode())
-        self.assertTemplateUsed(response, 'home.html')
+    
+    def test_redirect_after_POST(self):
+        response = self.client.post('/', data = {'item_text': 'A new list item'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/')
+
+    def test_do_not_save_on_GET(self):
+        self.client.get('/')
+        self.assertEqual(Item.objects.count(), 0)
 
     
     def test_saving_and_retrieving_items(self):
@@ -37,3 +44,4 @@ class HomePageTest(TestCase):
         second_save_item = saved_items[1]
         self.assertEqual(first_saved_item.text, 'The first (ever) list item')
         self.assertEqual(second_save_item.text, second_save_item.text)
+
