@@ -40,5 +40,5 @@ jobs:
         pipenv run python manage.py test
         nohup pipenv run python manage.py runserver 8080 > /dev/null 2>&1 &
         ls -l
-        chmod +x functional_test.sh
-        ./functional_test.sh
+        chmod +x function_test.sh
+        ./function_test.sh
