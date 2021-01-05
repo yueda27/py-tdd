@@ -28,10 +28,13 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
+        check_for_row_in_list_table("1: Buy peacock feathers")
+        check_for_row_in_list_table('2: Use peacock feathers to make a fly')
+        
+    def check_for_row_in_list_table(self, row_text):
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
-        self.assertIn('2: Use peacock feathers to make a fly', [row.text for row in rows])
+        self.assertIn(row_text, [row.text for row in rows])
 
 
 if __name__ == '__main__':
