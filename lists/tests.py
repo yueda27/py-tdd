@@ -44,4 +44,13 @@ class HomePageTest(TestCase):
         second_save_item = saved_items[1]
         self.assertEqual(first_saved_item.text, 'The first (ever) list item')
         self.assertEqual(second_save_item.text, second_save_item.text)
+    
+    def test_displays_all_list_items(self):
+        Item.objects.create(text='itemey 1')
+        Item.objects.create(text='itemey 2')
+
+        response = self.client.get("/").content.decode()
+
+        self.assertIn('itemey 1', response)
+        self.assertIn('itemey 2', response)
 
