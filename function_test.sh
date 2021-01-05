@@ -1,3 +1,3 @@
 rm db.sqlite3
-python manage.py migrate --noinput
-python test/functional/functional_test.py
+pipenv run python manage.py migrate --noinput
+pipenv run python test/functional/functional_test.py
