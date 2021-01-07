@@ -67,6 +67,10 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser.get(self.live_server_url)
         page_text = self.browser.find_element_by_tag_name('body').text
 
+        def ensure_no_user1_list():
+            self.assertNotIn('Buy peacock feathers', page_text)
+            self.assertNotIn('Use peacock feathers to make a fly', page_text)
+            
         ensure_no_user1_list()
 
         inputbox = self.browser.find_element_by_tag_name('id_new_item')
@@ -74,12 +78,8 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Buy milk')
 
-        user_2_list_url = self.browser.current_url
+        self.user_2_list_url = self.browser.current_url
         self.assertRegex(user_2_list_url, 'lists/+')
         self.assertNotEqual(user_1_list_url, user_2_list_url)
 
         ensure_no_user1_list()
-
-        def ensure_no_user1_list():
-            self.assertNotIn('Buy peacock feathers', page_text)
-            self.assertNotIn('Use peacock feathers to make a fly', page_text)
