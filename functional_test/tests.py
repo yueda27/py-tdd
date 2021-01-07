@@ -9,7 +9,7 @@ MAX_WAIT = 3
 class NewVisitorTest(LiveServerTestCase):
     def setUp(self):
         options = webdriver.FirefoxOptions()
-        #options.headless = True
+        options.headless = True
         self.browser = webdriver.Firefox(options = options)
     
     def tearDown(self):
