@@ -67,13 +67,13 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser.get(self.live_server_url)
         page_text = self.browser.find_element_by_tag_name('body').text
 
-        def ensure_no_user1_list():
+        def ensure_no_user1_list(page_text):
             self.assertNotIn('Buy peacock feathers', page_text)
             self.assertNotIn('Use peacock feathers to make a fly', page_text)
-            
-        ensure_no_user1_list()
 
-        inputbox = self.browser.find_element_by_tag_name('id_new_item')
+        ensure_no_user1_list(page_text)
+
+        inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('Buy milk')
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Buy milk')
