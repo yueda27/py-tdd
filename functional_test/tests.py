@@ -11,7 +11,7 @@ class NewVisitorTest(LiveServerTestCase):
         options = webdriver.FirefoxOptions()
         options.headless = True
         self.browser = webdriver.Firefox(options = options)
-    
+
     def tearDown(self):
         self.browser.quit()
     
@@ -60,9 +60,12 @@ class NewVisitorTest(LiveServerTestCase):
         #Ensure second user does not see first user list
 
         self.browser.quit()
-        self.browser = webdriver.Firefox()
+        options = webdriver.FirefoxOptions()
         options.headless = True
+        self.browser = webdriver.Firefox(options = options)
         
+        
+
         self.browser.get(self.live_server_url)
         page_text = self.browser.find_element_by_tag_name('body').text
 
