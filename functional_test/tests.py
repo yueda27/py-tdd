@@ -1,16 +1,20 @@
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 import time
 import unittest
+import os
 
 MAX_WAIT = 3
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
     def setUp(self):
         options = webdriver.FirefoxOptions()
         options.headless = True
         self.browser = webdriver.Firefox(options = options)
+        staging_server = os.environ.get("STAGING_SERVER")
+        if staging_server:
+            self.live_server_url = 'http://' + staging_server
 
     def tearDown(self):
         self.browser.quit()
@@ -83,7 +87,22 @@ class NewVisitorTest(LiveServerTestCase):
         user_2_list_url = self.browser.current_url
         self.assertRegex(user_2_list_url, 'lists/+')
         self.assertNotEqual(user_1_list_url, user_2_list_url)
-
         self.browser.get(user_2_list_url)
         page_text = self.browser.find_element_by_tag_name('body').text
         ensure_no_user1_list(page_text)
+
+    def test_layout_and_styling(self):
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(inputbox.location['x'] + round(inputbox.size['width'] / 2, 3), 512,
+            delta=10)
+        
+        inputbox.send_keys('testing')
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('1: testing')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(inputbox.location['x'] + round(inputbox.size['width'] / 2, 3), 512,
+            delta=10)
+        
