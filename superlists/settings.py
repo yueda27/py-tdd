@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if 'DJANGO_DEBUG_FALSE' in os.environ:
     DEBUG= False
     SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
-    ALLOWED_HOSTS = os.environ['SITENAME']
+    ALLOWED_HOSTS = ['*']
 else:
     DEBUG = True
     SECRET_KEY = '!erey11o-1xk)k@kp$gz2v0lr*b-89_e4%zs)kr7#&s(n*+e%&'
