@@ -3,16 +3,22 @@ from fabric.contrib.files import append, exists
 from fabric.api import cd, env, local, run 
 
 REPO_URL = 'https://github.com/yueda27/py-tdd.git'
+env.key_filename='~/.ssh/yueda_key_pair.pem'
 
 def deploy():
-    site_folder = '/home/ec2-user/pytdd'
-    run(f'mkdir -p {site_folder}')
-    with cd(site_folder):
-        _get_latest_source()
-        _create_or_update_venv()
-        _update_dotenv()
-        _update_static_files()
-        _update_database()
+    try:
+        site_folder = '/home/ec2-user/pytdd'
+        run(f'mkdir -p {site_folder}')
+        with cd(site_folder):
+            _get_latest_source()
+        with cd(f'{site_folder}/py-tdd'):
+            _create_or_update_venv()
+            _update_dotenv()
+            _update_static_files()
+            _update_database()
+    except:
+        with cd('/home/ec2-user'):
+            run("rm -rf pytdd")
 
 def _get_latest_source():
     if exists('.git'):
@@ -20,10 +26,10 @@ def _get_latest_source():
         return
     else:
         run(f'git clone {REPO_URL}')
-    current_commit = local('git log -n 1 --format=%H', capture=True)
-    run(f'git reset --hard {current_commit}')
+    #current_commit = local('git log -n 1 --format=%H', capture=True)
+    #run(f'git reset --hard {current_commit}')
 
-def _update_venv():
+def _update_dotenv():
     run("pipenv install")
 
 def _create_or_update_venv():
@@ -34,7 +40,7 @@ def _create_or_update_venv():
     append(".env", f'DJANGO_SECRET_KEY={new_secret}')
 
 def _update_static_files():
-    run('pipenv run manage.py collecstatic --noinput')
+    run('pipenv run python manage.py collecstatic --noinput')
 
 def _update_database():
-    run('pipenv run manage.py migrate --noinput')
+    run('pipenv run python manage.py migrate --noinput')
