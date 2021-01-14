@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 django = "*"
 selenium = "*"
+gunicorn = "*"
+fabric = "*"
+fabric3 = "*"
 
 [dev-packages]
 
