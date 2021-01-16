@@ -17,13 +17,15 @@ def deploy():
             _update_static_files()
             _update_database()
     except:
-        with cd('/home/ec2-user'):
-            run("rm -rf pytdd")
+        # with cd('/home/ec2-user'):
+        #     run("rm -rf pytdd")
+        pass
 
 def _get_latest_source():
-    if exists('.git'):
-        run('git fetch')
-        return
+    if exists('py-tdd/.git'):
+        with cd('py-tdd'):
+            run('git fetch')
+            return
     else:
         run(f'git clone {REPO_URL}')
     #current_commit = local('git log -n 1 --format=%H', capture=True)
